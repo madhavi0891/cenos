@@ -14,12 +14,12 @@
 
 - name: "Unarchive the package"
   unarchive:
-    src: /venky/helm-v3.2.1-linux-amd64.tar.gz
+    src: helm-v3.2.1-linux-amd64.tar.gz
     dest: /venky
 
 - name: copy helm binary
   copy:
-    src: /venky/linux-amd64/helm
+    src: linux-amd64/helm
     dest: /usr/local/bin
     mode: 0755
 
