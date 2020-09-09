@@ -6,22 +6,44 @@
     mode: 0755
   tags: helm
 
-- name: "Download Helm"
-  get_url:
-    url: "https://get.helm.sh/helm-v3.2.1-linux-amd64.tar.gz"
-    dest: /venky
-  tags: download
+- name: "Check if Helm is installed"
+  shell: command -v helm >/dev/null 2>&1
+  register: helm_exists
+  ignore_errors: yes
+  tags: helm
 
-- name: "Unarchive the package"
-  unarchive:
-    src: helm-v3.2.1-linux-amd64.tar.gz
-    dest: /venky
+- name: "Install Helm"
+  block:
+    - name: "Get Helm installer"
+      get_url:
+        url: curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+        dest: "{{ tmp_dir }}/get_helm.sh"
+        mode: chmod 700 get_helm.sh
+  
+    - name: "Run the installer"
+      shell: "{{ tmp_dir }}/get_helm.sh"
 
-- name: copy helm binary
+  when: helm_exists.rc > 0
+  tags: helm
+
+- name: "Copy yaml file"
   copy:
-    src: linux-amd64/helm
-    dest: /usr/local/bin
-    mode: 0755
+    src: "rbac-config.yml"
+    dest: "{{ tmp_dir }}/rbac-config.yml"
+    mode: 0644
+  tags: helm
+
+- name: "RBAC configuration"
+  shell: "kubectl apply -f {{ tmp_dir }}/rbac-config.yml"
+  tags: helm
+
+- name: "Init Helm"
+  shell: "helm init --service-account tiller"
+  tags: helm
+
+- name: "Update Helm repo"
+  shell: "helm repo update"
+  tags: helm
 
 - name: "Clean-up"
   file:
