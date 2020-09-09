@@ -9,18 +9,18 @@
 - name: "Download Helm"
   get_url:
     url: "https://get.helm.sh/helm-v3.2.1-linux-amd64.tar.gz"
-    dest: /root
+    dest: /venky
   tags: download
 
 - name: "Unarchive the package"
   unarchive:
-    src: /root/helm-v3.2.1-linux-amd64.tar.gz
-    dest: /root
+    src: /venky/helm-v3.2.1-linux-amd64.tar.gz
+    dest: /venky
 
 - name: copy helm binary
   copy:
-    src: /root/linux-amd64/helm
-    dest: /usr/local/sbin
+    src: /venky/linux-amd64/helm
+    dest: /usr/local/bin
     mode: 0755
 
 - name: "Clean-up"
