@@ -18,7 +18,7 @@
       get_url:
         url: curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
         dest: "{{ tmp_dir }}/get_helm.sh"
-        mode: chmod 700 get_helm.sh
+        mode: sudo chmod 700 get_helm.sh
   
     - name: "Run the installer"
       shell: "{{ tmp_dir }}/get_helm.sh"
