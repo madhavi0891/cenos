@@ -1,5 +1,5 @@
 ---
-kubernetes_helm_mirror: https://get.helm.sh
+kubernetes_helm_mirror: https://./get_helm.sh
 kubernetes_helm_ver: v3.3.0
 kubernetes_helm_os: linux
 kubernetes_helm_arch: amd64
